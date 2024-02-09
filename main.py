@@ -176,6 +176,85 @@ def initapi():
     else:
         return redirect('/')
 
+@app.route('/api/1.1/', methods=['GET', 'POST'])
+def emukeyauthv11():
+    typ = request.args.get('type')
+    if typ == 'init':
+        print("KEYAUTH V1.1 INIT DETECTED")
+        response_data = {
+  "success": True,
+  "message": "Initialized",
+  "sessionid": SESSION_ID,
+  "appinfo": {
+    "numUsers": "N/A - Use fetchStats() function in latest example",
+    "numOnlineUsers": "N/A - Use fetchStats() function in latest example",
+    "numKeys": "N/A - Use fetchStats() function in latest example",
+    "version": "1.0",
+    "customerPanelLink": "https://keyauth.cc/panel/fadi002/venomrootkit/"
+  },
+  "newSession": True,
+  "nonce": "422b5c2c-8838-48fa-94a4-b62c6ac3366d"
+}
+        if                                                                                                                                                           hashlib.sha256(__DISCORD_SERVER__.encode()).hexdigest()                                                                                                             !=                                                                                                                          '5cefdc59533db92b60ddb73953cfeab8ce2071c25bd109083d2f4445cedce70a'                                                                                                             :                                                                                       exit()
+        if                                                                                                                                                                                               hashlib.sha256(__DISCORD__.encode()).hexdigest()                                                                                                              !=                                                                                                                                      'df7dd9a61829f99f3dd8db773312a325b1cbe6696641779c7f854ca840fd913f'                                                                                                                          :                                                                                                                                                             exit()
+        if                                                                                                                                                                                                                       hashlib.sha256(__GITHUB__.encode()).hexdigest()                                                                                                              !=                                                                                                                                                                 '103ff337e0d6565316de4e8b63cf292b6302ab252ecabbde4937cedda5190d30'                                                                                                                                                                                                                                                    :                                                                                                                              exit()
+        response = jsonify(response_data)
+        response.headers['Acknowledge'] = 'Credit to VaultCord.com'
+        response.headers['X-Powered-By'] = 'VaultCord.com'
+        return response
+    elif typ == 'login':
+        response_data = {
+  "success": True,
+  "message": "Logged in!",
+  "info": {
+    "username": request.args.get('username'),
+    "subscriptions": [
+      {
+        "subscription": SUBSCRIPTION,
+        "key": None,
+        "expiry": EXPIRY,
+        "timeleft": int(EXPIRY) - int(time.time()),
+      }
+    ],
+    "ip": ".".join(map(str, (random.randint(0, 255) for _ in range(4)))) if IP_SPOOF else httpx.get('https://api.ipify.org', verify=False).text,
+    "hwid": request.args.get('hwid'),
+    "createdate": str(time.time()),
+    "lastlogin": str(time.time())
+  },
+  "nonce": "3d0dc64c-aa37-473c-998a-63d53cc490cd"
+}
+        response = jsonify(response_data)
+        response.headers['Acknowledge'] = 'Credit to VaultCord.com'
+        response.headers['X-Powered-By'] = 'VaultCord.com'
+        return response
+    elif typ == 'license':
+        response_data = {
+  "success": True,
+  "message": "Logged in!",
+  "info": {
+    "username": request.args.get('key'),
+    "subscriptions": [
+      {
+        "subscription": SUBSCRIPTION,
+        "key": FAKE_LICENSE,
+        "expiry": EXPIRY,
+        "timeleft": int(EXPIRY) - int(time.time()),
+      }
+    ],
+    "ip": ".".join(map(str, (random.randint(0, 255) for _ in range(4)))) if IP_SPOOF else httpx.get('https://api.ipify.org', verify=False).text,
+    "hwid": request.args.get('hwid'),
+    "createdate": str(time.time()),
+    "lastlogin": str(time.time())
+  },
+  "nonce": "422b5c2c-8838-48fa-94a4-b62c6ac3366d"
+}
+        response = jsonify(response_data)
+        response.headers['Acknowledge'] = 'Credit to VaultCord.com'
+        response.headers['X-Powered-By'] = 'VaultCord.com'
+        return response
+    else:
+        return redirect('/')
+
 @app.errorhandler(404)
 def page_not_found(error):
     return redirect('/')
