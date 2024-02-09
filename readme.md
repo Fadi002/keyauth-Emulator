@@ -5,7 +5,7 @@ This is a Flask-based emulator server designed to mimic the behavior of the KeyA
 
 ## Changeable Values
 
-- `SECRET`: A secret key used for hashing and signature generation. *You need change this value*.
+- `SECRET`: A secret key used for hashing and signature generation. *You need change this value*. ( not required for v1.1 api )
 - `SESSION_ID`: A random session ID is generated for each session. You can change it if needed.
 - `NONCE`: A unique identifier used for security purposes. It's recommended not to change it.
 - `SUBSCRIPTION`: Default subscription level. You can leave it unchanged.
@@ -32,8 +32,9 @@ This is a Flask-based emulator server designed to mimic the behavior of the KeyA
 ## Endpoints
 
 - `/`: Home page of the KeyAuth emulator server.
-- `/api/1.2/`: API endpoint for initializing, logging in, and handling license requests.
-
+- `/api/1.2/`: API endpoint for initializing, logging in, and handling license requests. (for api v1.2)
+- `/api/1.1/`: API endpoint for initializing, logging in, and handling license requests. (for api v1.1)
+- 
 ## Is That a Bypass?
 
 **Absolutely not.** This program is **not** a KeyAuth Bypass. Its sole purpose is to emulate the KeyAuth Server, and this can be achieved by any program or even manually.
