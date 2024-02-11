@@ -19,7 +19,7 @@ This is a Flask-based emulator server designed to mimic the behavior of the KeyA
 
 - `init()`: emulate the init function
 - `login()`: emulate the login function
-- `license()`:emulate the license function
+- `license()`: emulate the license function
 
 ## Usage
 
