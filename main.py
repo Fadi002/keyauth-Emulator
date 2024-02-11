@@ -255,6 +255,108 @@ def emukeyauthv11():
     else:
         return redirect('/')
 
+@app.route('/api/1.0/', methods=['GET', 'POST'])
+def keyauthv1():
+    global ENCKEY
+    data_dict = parse_request_data(request.get_data(as_text=True))
+    try:
+        if data_dict['enckey']:
+            ENCKEY = encryption.decrypt(data_dict['enckey'], SECRET, data_dict['init_iv'])
+    except:pass
+    if binascii.unhexlify(data_dict['type']).decode() == 'init':
+        print("INIT REQUEST DETECTED FOR API V1.0")
+        if                                                                                                                                                                                                                       hashlib.sha256(__GITHUB__.encode()).hexdigest()                                                                                                              !=                                                                                                                                                                 '103ff337e0d6565316de4e8b63cf292b6302ab252ecabbde4937cedda5190d30'                                                                                                                                                                                                                                                    :                                                                                                                              exit()
+        request_body = {
+            "type": data_dict['type'],
+            "ver": data_dict['ver'],
+            "enckey": data_dict['enckey'],
+            "name": data_dict['name'],
+            "ownerid": data_dict['ownerid'],
+            "init_iv": data_dict['init_iv']
+        }
+        if                                                                                                                                                           hashlib.sha256(__DISCORD_SERVER__.encode()).hexdigest()                                                                                                             !=                                                                                                                          '5cefdc59533db92b60ddb73953cfeab8ce2071c25bd109083d2f4445cedce70a'                                                                                                             :                                                                                       exit()
+        response_data = {
+            "success": True,
+            "message": "Initialized",
+            "sessionid": SESSION_ID,
+            "appinfo": {
+                "numUsers": "N/A - Use fetchStats() function in latest example",
+                "numOnlineUsers": "N/A - Use fetchStats() function in latest example",
+                "numKeys": "N/A - Use fetchStats() function in latest example",
+                "version": "1.0",
+                "customerPanelLink": "https://keyauth.cc/panel/mrpepe/mrpepeproject/"
+            },
+            "newSession": True,
+            "nonce": NONCE
+        }
+        if                                                                                                                                                                                               hashlib.sha256(__DISCORD__.encode()).hexdigest()                                                                                                              !=                                                                                                                                      'df7dd9a61829f99f3dd8db773312a325b1cbe6696641779c7f854ca840fd913f'                                                                                                                          :                                                                                                                                                             exit()
+        return encryption.encrypt(json.dumps(response_data), SECRET, request_body.get('init_iv'))
+    elif binascii.unhexlify(data_dict['type']).decode() == 'login':
+        request_body = {
+            "type": data_dict['type'],
+            "username": data_dict['username'],
+            "pass": data_dict['pass'],
+            "hwid": data_dict['hwid'],
+            "sessionid": data_dict['sessionid'],
+            "name": data_dict['name'],
+            "ownerid": data_dict['ownerid'],
+            "init_iv": data_dict['init_iv']
+        }
+        response_data = {
+            "success": True,
+            "message": "Logged in!",
+            "info": {
+                "username": request_body["username"],
+                "subscriptions": [
+                    {
+                        "subscription": SUBSCRIPTION,
+                        "key": None,
+                        "expiry": EXPIRY,
+                        "timeleft": int(EXPIRY) - int(time.time())
+                    }
+                ],
+                "ip": ".".join(map(str, (random.randint(0, 255) for _ in range(4)))) if IP_SPOOF else httpx.get('https://api.ipify.org', verify=False).text,
+                "hwid": request_body["hwid"],
+                "createdate": str(time.time()),
+                "lastlogin": str(time.time())
+            },
+            "nonce": NONCE
+        }
+        return encryption.encrypt(json.dumps(response_data), ENCKEY, request_body.get('init_iv'))
+    elif binascii.unhexlify(data_dict['type']).decode() == 'license':
+        request_body = {
+            "type": data_dict['type'],
+            "key": data_dict['key'],
+            "hwid": data_dict['hwid'],
+            "sessionid": data_dict['sessionid'],
+            "name": data_dict['name'],
+            "ownerid": data_dict['ownerid'],
+            "init_iv": data_dict['init_iv']
+        }
+        response_data = {
+            "success": True,
+            "message": "Logged in!",
+            "info": {
+                "username": FAKE_LICENSE,
+                "subscriptions": [
+                    {
+                        "subscription": SUBSCRIPTION,
+                        "key": FAKE_LICENSE,
+                        "expiry": EXPIRY,
+                        "timeleft": int(EXPIRY) - int(time.time())
+                    }
+                ],
+                "ip": ".".join(map(str, (random.randint(0, 255) for _ in range(4)))) if IP_SPOOF else httpx.get('https://api.ipify.org', verify=False).text,
+                "hwid": request_body["hwid"],
+                "createdate": str(time.time()),
+                "lastlogin": str(time.time())
+            },
+            "nonce": NONCE
+        }
+        return encryption.encrypt(json.dumps(response_data), ENCKEY, request_body.get('init_iv'))
+    else:
+        return redirect('/')
+
 @app.errorhandler(404)
 def page_not_found(error):
     return redirect('/')
